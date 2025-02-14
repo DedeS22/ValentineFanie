@@ -20,6 +20,8 @@
         padding: 20px;
         border-radius: 10px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        position: absolute;
+        transition: all 0.3s ease-in-out;
     }
     button {
         margin: 10px;
@@ -35,7 +37,11 @@
     .no {
         background: red;
         color: white;
-        position: relative;
+        position: absolute;
+    }
+    .start-btn {
+        background: blue;
+        color: white;
     }
     .animation-container {
         display: none;
@@ -48,10 +54,7 @@
     .love-image {
         width: 300px;
         height: auto;
-        display: none;
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
+        display: block;
         opacity: 0;
         transition: opacity 1s ease-in-out;
     }
@@ -65,27 +68,37 @@
 </head>
 <body>
 
-  <audio id="bg-music" autoplay loop>
+  <audio id="bg-music" loop>
     <source src="lagu.mp3" type="audio/mp3">
     Your browser does not support the audio element.
   </audio>
 
-  <div class="container">
+  <div class="container" id="startScreen">
+    <h1>Selamat datang! Klik tombol di bawah ini untuk memulai 🎶</h1>
+    <button class="start-btn" onclick="startMusic()">Start</button>
+  </div>
+
+  <div class="container" id="questionScreen" style="display: none;">
     <h1>Fanie, will you be my valentine? 💖</h1>
     <button class="yes" onclick="playLoveScene()">Yes</button>
-    <button class="no" onclick="changeNoText()">No</button>
+    <button class="no" onclick="moveNoButton()">No</button>
   </div>
 
   <div class="animation-container" id="loveScene">
     <img src="love1.png" class="love-image" id="loveImage">
-    <h2 class="text-message">Yay! Let us enjoy this together! 😻💕</h2>
+    <h2 class="text-message">Yey, let's enjoy this together! 😻💕</h2>
   </div>
 
   <script>
-    function playLoveScene() {
-        document.querySelector(".container").style.display = "none";
-        document.getElementById("loveScene").style.display = "block";
+    function startMusic() {
         document.getElementById("bg-music").play();
+        document.getElementById("startScreen").style.display = "none";
+        document.getElementById("questionScreen").style.display = "block";
+    }
+
+    function playLoveScene() {
+        document.getElementById("questionScreen").style.display = "none";
+        document.getElementById("loveScene").style.display = "block";
 
         let images = ["love1.png", "love2.png", "love3.png", "love4.png", "love5.png", "love6.png"];
         let imgElement = document.getElementById("loveImage");
@@ -105,8 +118,11 @@
         changeImage();
     }
 
-    function changeNoText() {
-        document.querySelector(".no").textContent = "Yakin gamau? Coba pikir ulang lagi!";
+    function moveNoButton() {
+        let noButton = document.querySelector(".no");
+        noButton.textContent = "Yakin gamau? Coba pikir ulang lagi!";
+        noButton.style.left = Math.random() * (window.innerWidth - 100) + "px";
+        noButton.style.top = Math.random() * (window.innerHeight - 50) + "px";
     }
   </script>
 
