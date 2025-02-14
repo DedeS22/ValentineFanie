@@ -13,15 +13,13 @@
         background-color: pink;
         font-family: Arial, sans-serif;
         text-align: center;
-        overflow: hidden;
     }
     .container {
         background: white;
         padding: 20px;
         border-radius: 10px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-        position: absolute;
-        transition: all 0.3s ease-in-out;
+        position: relative;
     }
     button {
         margin: 10px;
@@ -39,90 +37,55 @@
         color: white;
         position: absolute;
     }
-    .start-btn {
-        background: blue;
-        color: white;
-    }
-    .animation-container {
-        display: none;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        text-align: center;
-    }
     .love-image {
-        width: 300px;
+        width: 200px;
         height: auto;
-        display: block;
-        opacity: 0;
-        transition: opacity 1s ease-in-out;
-    }
-    .text-message {
-        font-size: 24px;
+        display: none;
         margin-top: 20px;
-        color: white;
-        font-weight: bold;
+        animation: fadeInOut 1s ease-in-out infinite;
+    }
+    @keyframes fadeInOut {
+        0%, 100% { opacity: 0; }
+        50% { opacity: 1; }
     }
   </style>
 </head>
 <body>
 
-  <audio id="bg-music" loop>
-    <source src="lagu.mp3" type="audio/mp3">
-    Your browser does not support the audio element.
+  <audio id="bg-music" autoplay loop>
+    <source src="lagu.mp3" type="audio/mpeg">
   </audio>
 
-  <div class="container" id="startScreen">
-    <h1>Selamat datang! Klik tombol di bawah ini untuk memulai 🎶</h1>
-    <button class="start-btn" onclick="startMusic()">Start</button>
-  </div>
-
-  <div class="container" id="questionScreen" style="display: none;">
-    <h1>Fanie, will you be my valentine? 💖</h1>
-    <button class="yes" onclick="playLoveScene()">Yes</button>
-    <button class="no" onclick="moveNoButton()">No</button>
-  </div>
-
-  <div class="animation-container" id="loveScene">
-    <img src="love1.png" class="love-image" id="loveImage">
-    <h2 class="text-message">Yey, let's enjoy this together! 😻💕</h2>
+  <div class="container">
+    <h1 id="question">Fanie, will you be my valentine? 💖</h1>
+    <button class="yes" onclick="showLove()">Yes</button>
+    <button class="no" onclick="moveButton()">No</button>
+    <img src="Love1.PNG" class="love-image" id="loveImage">
   </div>
 
   <script>
-    function startMusic() {
-        document.getElementById("bg-music").play();
-        document.getElementById("startScreen").style.display = "none";
-        document.getElementById("questionScreen").style.display = "block";
-    }
+    const images = ["Love1.PNG", "Love2.jpg", "love3.PNG", "love4.jpg", "love5.jpg", "love6.jpg"];
+    let currentImageIndex = 0;
+    const loveImage = document.getElementById("loveImage");
+    const questionText = document.getElementById("question");
 
-    function playLoveScene() {
-        document.getElementById("questionScreen").style.display = "none";
-        document.getElementById("loveScene").style.display = "block";
-
-        let images = ["love1.png", "love2.png", "love3.png", "love4.png", "love5.png", "love6.png"];
-        let imgElement = document.getElementById("loveImage");
-        let index = 0;
-
-        function changeImage() {
-            imgElement.src = images[index];
-            imgElement.style.opacity = "1";
-
-            setTimeout(() => {
-                imgElement.style.opacity = "0";
-                index = (index + 1) % images.length;
-                setTimeout(changeImage, 1000);
-            }, 3000);
-        }
-
+    function showLove() {
+        document.querySelector(".yes").textContent = "Yey, let's enjoy this together!";
+        loveImage.style.display = "block";
         changeImage();
     }
 
-    function moveNoButton() {
-        let noButton = document.querySelector(".no");
-        noButton.textContent = "Yakin gamau? Coba pikir ulang lagi!";
-        noButton.style.left = Math.random() * (window.innerWidth - 100) + "px";
-        noButton.style.top = Math.random() * (window.innerHeight - 50) + "px";
+    function changeImage() {
+        loveImage.src = images[currentImageIndex];
+        currentImageIndex = (currentImageIndex + 1) % images.length;
+        setTimeout(changeImage, 2000);
+    }
+
+    function moveButton() {
+        const button = document.querySelector(".no");
+        button.style.left = Math.random() * (window.innerWidth - 100) + "px";
+        button.style.top = Math.random() * (window.innerHeight - 50) + "px";
+        button.textContent = "Yakin gamau? Coba pikir ulang lagi!";
     }
   </script>
 
